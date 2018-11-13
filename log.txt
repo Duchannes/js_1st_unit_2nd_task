@@ -1,0 +1,10 @@
+1. Property myPromises is wrong.
+value: [object Object]
+2. Property elementText is wrong.
+value: string
+3. Property const is wrong.
+value: second
+4. Property parameters is wrong.
+value: a,s,d,g
+5. Property description is wrong.
+value: qwertyuiopasdfghjkl

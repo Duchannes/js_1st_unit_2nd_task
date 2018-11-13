@@ -1,0 +1,13 @@
+{
+	"flag": false,
+	"myPromises": {"1":2},
+	"element": {},
+	"screenshot": "null",
+	"elementText": ["string"],
+	"allElementsText": "constant",
+	"counter": 12,
+	"config": "Common state",
+	"const": "second",
+	"parameters": ["a","s","d","g"],
+	"description": "qwertyuiopasdfghjkl"
+}
