@@ -6,7 +6,7 @@ let conditions = {
   flag: 'typeof json.flag !== \'boolean\'',
   myPromises: '!Array.isArray(json.myPromises)',
   element: 'typeof json.element !== \'object\'',
-  screenshot: 'json.screenshot',
+  screenshot: 'json.screenshot !== null',
   elementText: 'typeof json.elementText !== \'string\'',
   allElementsText: '!json.allElementsText.toString().includes(\'const\')',
   counter: 'isNaN(parseFloat(json.counter)) || parseFloat(json.counter) < 10',
