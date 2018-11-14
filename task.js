@@ -1,65 +1,38 @@
-// "flag" - boolean
-// "myPromises" - array
-// "element" - object
-// "screenshot" - null
-// "elementText" - string
-// "allElementsText" - contain "const" in string
-// "counter" - more than 10
-// "config" - equal "Common"
-// "const" - equal "FiRst" (case insensitive)
-// "parameters" - array with length 8
-// "description" - string with length more than 5 but less than 13
-
 let json = require('./2.json')
 let numOfWrongProperties = 0
 let fs = require('fs')
 let log = ''
+let conditions = {
+  flag: 'typeof json.flag !== \'boolean\'',
+  myPromises: '!Array.isArray(json.myPromises)',
+  element: 'typeof json.element !== \'object\'',
+  screenshot: 'json.screenshot',
+  elementText: 'typeof json.elementText !== \'string\'',
+  allElementsText: '!json.allElementsText.toString().includes(\'const\')',
+  counter: 'isNaN(parseFloat(json.counter)) || parseFloat(json.counter) < 10',
+  config: 'json.config !== \'Common\'',
+  const: '!(/FiRst/i).test(json.const)',
+  parameters: 'typeof json.parameters !== \'object\' || json.parameters.length !== 8',
+  description: 'typeof json.description !== \'string\' || json.description.length <= 5 || json.description.length >= 13'
+}
 
-chechJsonObject(json)
-
-function chechJsonObject (object) {
-  if (typeof json.flag !== 'boolean') {
-    propertyIsWrong(json.flag, 'flag')
+function chechJsonObject (conditions, json) {
+  for (var propertyName in conditions) {
+    // eslint-disable-next-line no-eval
+    if (eval(conditions[propertyName])) {
+      propertyIsWrong(json[propertyName], propertyName)
+    }
   }
-  if (!Array.isArray(json.myPromises)) {
-    propertyIsWrong(json.myPromises, 'myPromises')
-  }
-  if (typeof json.element !== 'object') {
-    propertyIsWrong(json.element, 'element')
-  }
-  if (!json.screenshot) {
-    propertyIsWrong(json.screenshot, 'screenshot')
-  }
-  if (typeof json.elementText !== 'string') {
-    propertyIsWrong(json.elementText, 'elementText')
-  }
-  if (!json.allElementsText.toString().includes('const')) {
-    propertyIsWrong(json.allElementsText, 'allElementsText')
-  }
-  if (isNaN(parseFloat(json.counter)) || parseFloat(json.counter) < 10) {
-    propertyIsWrong(json.counter, 'counter')
-  }
-  if (!json.config === 'Common') {
-    propertyIsWrong(json.config, 'config')
-  }
-  if (!(/FiRst/i).test(json.const)) {
-    propertyIsWrong(json.const, 'const')
-  }
-  if (typeof json.parameters !== 'object' || json.parameters.length !== 8) {
-    propertyIsWrong(json.parameters, 'parameters')
-  }
-  if (typeof json.description !== 'string' || json.description.length <= 5 || json.description.length >= 13) {
-    propertyIsWrong(json.description, 'description')
+  if (numOfWrongProperties === 0) {
+    console.log('OK')
+  } else {
+    fs.writeFile('log.txt', log, 'utf-8', () => { console.log('File log.txt was created') })
   }
 }
 
-function propertyIsWrong (property, name) {
+function propertyIsWrong (propertyValue, propertyName) {
   numOfWrongProperties++
-  log += numOfWrongProperties + '. Property ' + name + ' is wrong.\r\n' + 'value: ' + property + '\r\n'
+  log += numOfWrongProperties + '. Property ' + propertyName + ' is wrong.\r\n' + 'value: ' + propertyValue + '\r\n'
 }
 
-if (numOfWrongProperties === 0) {
-  console.log('OK')
-} else {
-  fs.writeFile('log.txt', log.toString(), 'utf-8', () => { console.log('File log.txt was created') })
-}
+chechJsonObject(conditions, json)
