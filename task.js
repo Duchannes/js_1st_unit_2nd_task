@@ -1,8 +1,7 @@
-let json = require('./2.json')
-let numOfWrongProperties = 0
-let fs = require('fs')
-let log = ''
-let conditions = {
+const json = require('./2.json')
+const fs = require('fs')
+
+const conditions = {
   flag: 'typeof json.flag !== \'boolean\'',
   myPromises: '!Array.isArray(json.myPromises)',
   element: 'typeof json.element !== \'object\'',
@@ -16,23 +15,33 @@ let conditions = {
   description: 'typeof json.description !== \'string\' || json.description.length <= 5 || json.description.length >= 13'
 }
 
+let numOfWrongProperties = 0
+let wrongProperties = {}
+
+
 function chechJsonObject (conditions, json) {
-  for (var propertyName in conditions) {
-    // eslint-disable-next-line no-eval
-    if (eval(conditions[propertyName])) {
-      propertyIsWrong(json[propertyName], propertyName)
-    }
+const objKeys = Object.keys(conditions)
+
+objKeys.forEach((propertyName, index, array) => {
+  // eslint-disable-next-line no-eval
+  if (eval(conditions[propertyName])) {
+    propertyIsWrong(json[propertyName], propertyName)
   }
-  if (numOfWrongProperties === 0) {
-    console.log('OK')
-  } else {
-    fs.writeFile('log.txt', log, 'utf-8', () => { console.log('File log.txt was created') })
-  }
+ })
 }
 
 function propertyIsWrong (propertyValue, propertyName) {
   numOfWrongProperties++
-  log += numOfWrongProperties + '. Property ' + propertyName + ' is wrong.\r\n' + 'value: ' + propertyValue + '\r\n'
+  wrongProperties[propertyName] = propertyValue
+}
+
+function checkProperties () {
+  if (!numOfWrongProperties) {
+    console.log('OK')
+  } else {
+    fs.writeFile('Wrong_Properties.json', JSON.stringify(wrongProperties, null, ' '), 'utf-8', () => console.log(numOfWrongProperties + ' properties are wrong. File Wrong_Properties.json was created') )
+  }
 }
 
 chechJsonObject(conditions, json)
+checkProperties()
