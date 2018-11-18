@@ -18,16 +18,14 @@ const conditions = {
 let numOfWrongProperties = 0
 let wrongProperties = {}
 
-
 function chechJsonObject (conditions, json) {
-const objKeys = Object.keys(conditions)
-
-objKeys.forEach((propertyName, index, array) => {
+  const objKeys = Object.keys(conditions)
+  objKeys.forEach((propertyName, index, array) => {
   // eslint-disable-next-line no-eval
-  if (eval(conditions[propertyName])) {
-    propertyIsWrong(json[propertyName], propertyName)
-  }
- })
+    if (eval(conditions[propertyName])) {
+      propertyIsWrong(json[propertyName], propertyName)
+    }
+  })
 }
 
 function propertyIsWrong (propertyValue, propertyName) {
@@ -39,7 +37,7 @@ function checkProperties () {
   if (!numOfWrongProperties) {
     console.log('OK')
   } else {
-    fs.writeFile('Wrong_Properties.json', JSON.stringify(wrongProperties, null, ' '), 'utf-8', () => console.log(numOfWrongProperties + ' properties are wrong. File Wrong_Properties.json was created') )
+    fs.writeFile('Wrong_Properties.json', JSON.stringify(wrongProperties, null, ' '), 'utf-8', () => console.log(numOfWrongProperties + ' properties are wrong. File Wrong_Properties.json was created'))
   }
 }
 
